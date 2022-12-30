@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   00_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/30 23:44:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2022/12/30 23:45:41 by isojo-go         ###   ########.fr       */
+/*   Created: 2022/12/30 23:45:54 by isojo-go          #+#    #+#             */
+/*   Updated: 2022/12/30 23:47:50 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "../inc/philo.h"
 
-# include "../lib/LIBFT/inc/libft.h"
-
-#endif
+int	main(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+	ft_printf("Hello World!\n");
+	return (0);
+}
