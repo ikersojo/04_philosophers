@@ -6,7 +6,7 @@
 #    By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/20 16:19:35 by isojo-go          #+#    #+#              #
-#    Updated: 2022/12/30 23:44:38 by isojo-go         ###   ########.fr        #
+#    Updated: 2023/01/02 22:24:22 by isojo-go         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,13 +57,13 @@ all:		$(NAME)
 
 $(NAME):	libft $(OBJ)
 			@mkdir -p $(BINDIR)
-			@$(CC) $(OBJ) $(LIBS) $(NO_BONUS) $(HEADERS) -o ./$(BINDIR)/$(NAME)
+			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME)
 			@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
 
 debug:		libft $(OBJ)
 			@mkdir -p $(BINDIR)
 			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME) $(DEBUG)
-			@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
+			@echo "$(GREEN)$(NAME) compiled for debug!$(DEF_COLOR)"
 
 libft:
 			@$(MAKE) -C $(LIBFT)

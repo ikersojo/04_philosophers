@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   00_main.c                                          :+:      :+:    :+:   */
+/*   02_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/30 23:45:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/02 23:48:26 by isojo-go         ###   ########.fr       */
+/*   Created: 2023/01/02 23:35:11 by isojo-go          #+#    #+#             */
+/*   Updated: 2023/01/02 23:40:47 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-
-
-int	main(int argc, char **argv)
+void	ft_init(int argc, char **argv, t_data *data)
 {
-	t_data		data;
-	// pthread_t	th;
-
-
-	ft_check_input(argc, argv);
-	ft_printf("%sInputs Syantax OK!\n%s", GREEN, DEF_COLOR); // DEBUG
-
-	ft_init(argc, argv, &data);
-	ft_printf("captured variables:\n   noff = %d\n  t_die = %d\n  t_eat = %d\nt_sleep = %d\nmax_it = %d\n\n", data.n_off, data.t_die, data.t_eat, data.t_sleep, data.max_it); // DEBUG
-	
-
-	// pthread_create(th, NULL, )
-
-
-	return (EXIT_SUCCESS);
+	data->n_off = ft_atoi(*(argv + 1));
+	data->t_die = ft_atoi(*(argv + 2));
+	data->t_eat = ft_atoi(*(argv + 3));
+	data->t_sleep = ft_atoi(*(argv + 4));
+	if (argc == 6)
+		data->max_it = ft_atoi(*(argv + 5));
+	else
+		data->max_it = -1;
 }
