@@ -20,7 +20,7 @@ A modified version of lift project, to be used in other projects.
 - t_intlst: a linked list of signed integers.
 
 ## Additional main functions
-- ft_printf
+- printf
 - ft_gnl (get_next_line)
 
 ## Additional auxiliary functions

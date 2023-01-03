@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 07:49:09 by isojo-go          #+#    #+#             */
-/*   Updated: 2022/10/12 11:02:11 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/03 22:45:04 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static int	conv_sel(va_list *ap, char cs)
 }
 
 /* DESCRIPTION:
-The printf utility exits 0 on success, and >0 if an error occurs.
-The printf utility formats and prints its arguments, after the first, under
+The ft_printf utility exits 0 on success, and >0 if an error occurs.
+The ft_printf utility formats and prints its arguments, after the first, under
 control of the format specified by cs (conversion specifier).
 ---------------------------------------------------------------------------- */
 int	ft_printf(const char *str, ...)
