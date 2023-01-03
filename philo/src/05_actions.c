@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:26:18 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/03 22:48:04 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/03 23:41:45 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	ft_leave_fork(t_fork *fork)
 
 void	ft_eat(t_data *data, t_philo *philo, t_fork *fork_r, t_fork *fork_l)
 {
-	philo->status = EATING;
-	philo->it++;
 	pthread_mutex_lock(&data->screen);
 	printf("%ldms %d has taken a fork\n", ft_now() - data->start, philo->id);
 	printf("%ldms %d is eating\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
+	philo->status = EATING;
+	philo->it++;
 	if(ft_now() - philo->last_meal + data->t_eat < data->t_die)
 	{
 		philo->last_meal = ft_now();
@@ -41,7 +41,7 @@ void	ft_eat(t_data *data, t_philo *philo, t_fork *fork_r, t_fork *fork_l)
 	}
 	else
 	{
-		usleep(data->t_die - (ft_now() - philo->last_meal));
+		usleep((data->t_die - (ft_now() - philo->last_meal)) * 1000);
 		pthread_mutex_lock(&data->screen);
 		printf("%ldms %d has died\n", ft_now() - data->start, philo->id);
 		ft_free_all(data);
@@ -53,10 +53,10 @@ void	ft_eat(t_data *data, t_philo *philo, t_fork *fork_r, t_fork *fork_l)
 	fork_l->holder = 0;
 	pthread_mutex_unlock(&fork_l->mutex);
 	pthread_mutex_unlock(&fork_r->mutex);
-	philo->status = SLEEPING;
 	pthread_mutex_lock(&data->screen);
 	printf("%ldms %d is sleeping\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
+	philo->status = SLEEPING;
 	if(ft_now() - philo->last_meal + data->t_sleep < data->t_die)
 	{
 		philo->last_meal = ft_now();
@@ -64,14 +64,16 @@ void	ft_eat(t_data *data, t_philo *philo, t_fork *fork_r, t_fork *fork_l)
 	}
 	else
 	{
-		usleep(data->t_die - (ft_now() - philo->last_meal));
+		usleep((data->t_die - (ft_now() - philo->last_meal)) * 1000);
 		pthread_mutex_lock(&data->screen);
 		printf("%ldms %d has died\n", ft_now() - data->start, philo->id);
 		ft_free_all(data);
 		exit(EXIT_SUCCESS);
 	}
-	philo->status = THINKING;
 	pthread_mutex_lock(&data->screen);
 	printf("%ldms %d is thinking\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
+	philo->status = THINKING;
+	if (data->n_off % 2 != 0)
+		usleep(data->t_eat * 1000 + 1000);
 }

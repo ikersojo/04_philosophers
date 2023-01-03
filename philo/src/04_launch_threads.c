@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:30:24 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/03 22:48:50 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/03 23:28:32 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,21 @@ void	*launch_thread(void *arg)
 
 	data = (t_data *)arg;
 	philo = ft_get_philo(data);
+	if (data->n_off == 1)
+	{
+		usleep(data->t_die * 1000);
+		philo->status = DEAD;
+		pthread_mutex_lock(&data->screen);
+		printf("%ldms %d has died\n", ft_now() - data->start, philo->id);
+		ft_free_all(data);
+		exit(EXIT_SUCCESS);
+	}
 	fork_r = ft_get_fork(data, philo->id);
 	if (philo->id == data->n_off)
 		fork_l = ft_get_fork(data, 1);
 	else
 		fork_l = ft_get_fork(data, philo->id + 1);
-	while (philo->status == THINKING && philo->it < data->max_it)
+	while (philo->status == THINKING && (philo->it < data->max_it || data->max_it == -1))
 	{
 		if (fork_r->status == NOT_IN_USE)
 			ft_take_fork(philo, fork_r);
@@ -72,7 +81,7 @@ void	*launch_thread(void *arg)
 			ft_leave_fork(fork_r);
 		else if (fork_l->holder == philo->id)
 			ft_leave_fork(fork_l);
-		usleep(1000); //wait for 1ms before trying again
+		usleep(500); //wait for 0.5ms before trying again
 		if (ft_now() - philo->last_meal > data->t_die)
 		{
 			philo->status = DEAD;
