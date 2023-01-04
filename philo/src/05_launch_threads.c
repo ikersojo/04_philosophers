@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   04_launch_threads.c                                :+:      :+:    :+:   */
+/*   05_launch_threads.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:30:24 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/03 23:28:32 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_philo	*ft_get_philo(t_data *data)
 		if (philo->th == tid)
 			return (philo);
 	}
-	ft_exit_w_error(TH_ID_NOT_FOUND);
+	ft_print_error(TH_ID_NOT_FOUND);
 	return (NULL);
 }
 
@@ -42,8 +42,37 @@ static t_fork	*ft_get_fork(t_data *data, int id)
 		if (fork->id == id)
 			return (fork);
 	}
-	ft_exit_w_error(FORK_ID_NOT_FOUND);
+	ft_print_error(FORK_ID_NOT_FOUND);
 	return (NULL);
+}
+
+void	ft_eatattempt(t_data *data, t_philo *philo, t_fork *fk_r, t_fork *fk_l)
+{
+	if (fk_r->status == NOT_IN_USE)
+		ft_take_fork(philo, fk_r);
+	if (fk_l->status == NOT_IN_USE)
+		ft_take_fork(philo, fk_l);
+	if (fk_r->holder == philo->id && fk_l->holder == philo->id)
+		ft_start_eat(data, philo, fk_r, fk_l);
+	else
+	{
+		if (fk_r->holder == philo->id)
+			ft_leave_fork(fk_r);
+		if (fk_l->holder == philo->id)
+			ft_leave_fork(fk_l);
+		usleep(100);
+	}
+}
+
+static int	ft_die_alone(t_data *data, t_philo *philo)
+{
+	if (data->n_off == 1)
+	{
+		usleep(data->t_die * 1000);
+		ft_die(data, philo);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 void	*launch_thread(void *arg)
@@ -55,41 +84,19 @@ void	*launch_thread(void *arg)
 
 	data = (t_data *)arg;
 	philo = ft_get_philo(data);
-	if (data->n_off == 1)
-	{
-		usleep(data->t_die * 1000);
-		philo->status = DEAD;
-		pthread_mutex_lock(&data->screen);
-		printf("%ldms %d has died\n", ft_now() - data->start, philo->id);
-		ft_free_all(data);
-		exit(EXIT_SUCCESS);
-	}
+	if (ft_die_alone(data, philo) == 1)
+		return (EXIT_SUCCESS);
 	fork_r = ft_get_fork(data, philo->id);
 	if (philo->id == data->n_off)
 		fork_l = ft_get_fork(data, 1);
 	else
 		fork_l = ft_get_fork(data, philo->id + 1);
-	while (philo->status == THINKING && (philo->it < data->max_it || data->max_it == -1))
+	while (philo->status == THINKING && data->stop != 1
+		&& (philo->it < data->max_it || data->max_it == -1))
 	{
-		if (fork_r->status == NOT_IN_USE)
-			ft_take_fork(philo, fork_r);
-		if (fork_l->status == NOT_IN_USE)
-			ft_take_fork(philo, fork_l);
-		if (fork_r->holder == philo->id && fork_l->holder == philo->id)
-			ft_eat(data, philo, fork_r, fork_l);
-		else if (fork_r->holder == philo->id)
-			ft_leave_fork(fork_r);
-		else if (fork_l->holder == philo->id)
-			ft_leave_fork(fork_l);
-		usleep(500); //wait for 0.5ms before trying again
+		ft_eatattempt(data, philo, fork_r, fork_l);
 		if (ft_now() - philo->last_meal > data->t_die)
-		{
-			philo->status = DEAD;
-			pthread_mutex_lock(&data->screen);
-			printf("%ldms %d has died\n", ft_now() - data->start, philo->id);
-			ft_free_all(data);
-			exit(EXIT_SUCCESS);
-		}
+			ft_die(data, philo);
 	}
 	return (EXIT_SUCCESS);
 }

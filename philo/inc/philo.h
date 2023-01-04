@@ -6,18 +6,18 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 23:44:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/03 22:48:04 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:24:25 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../lib/LIBFT/inc/libft.h"
 # include <pthread.h>
 # include <sys/time.h>
-
-// Key Program Parameters
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 // Error Messages
 # define WRONG_SYNTAX	"\033[0;31mWrong Syntax. \
@@ -50,9 +50,6 @@ simulation will instantly stop.\n\n\033[0;39m"
 # define SLEEPING		1
 # define THINKING		2
 # define DEAD			3
-// # define NOT_EATING		3
-// # define NOT_SLEEPING	4
-// # define NOT_THINKING	5
 
 # define MET			1
 # define NOT_MET		0
@@ -87,42 +84,57 @@ typedef struct s_data
 	int				t_sleep;
 	int				max_it;
 	long			start;
-	pthread_mutex_t	screen;  // Mutex to print to screen
-	t_philo			*philos; // Array containing all philosophers
-	t_fork			*forks;  // Array containing all forks
-}				t_data;
+	int				stop;
+	pthread_mutex_t	screen;
+	t_philo			*philos;
+	t_fork			*forks;
+}					t_data;
+
+typedef struct s_info
+{
+	t_data	*data;
+	long	time;
+	int		id;
+}			t_info;
 
 // FUNCTIONS
-
 /*------ INITIALIZE AND DESTROY DATA STRUCTURE ------*/
-
 t_data	*ft_init(int argc, char **argv);
 void	ft_free_all(t_data *data);
 
-
 /*------ CHECK VALIDITY OF USER INPUT ------*/
-
 int		ft_check_input(int argc, char **argv);
 
-
 /*------ SETUP/DESTROY THE THREADS AND MUTEXES ------*/
-
-void	ft_prepare_the_table(t_data *data);
-void	ft_sit_in_the_table(t_data *data);
-void	ft_leave_the_table(t_data *data);
-
+int		ft_prepare_the_table(t_data *data);
+int		ft_sit_in_the_table(t_data *data);
+int		ft_leave_the_table(t_data *data);
 
 /*------ PHILOSOPHERS ACTIONS ------*/
-
 void	*launch_thread(void *arg);
 void	ft_take_fork(t_philo *philo, t_fork *fork);
 void	ft_leave_fork(t_fork *fork);
-void	ft_eat(t_data *data, t_philo *philo, t_fork *fork_r, t_fork *fork_l);
-
+void	ft_die(t_data *data, t_philo *philo);
+void	ft_start_eat(t_data *data, t_philo *philo, t_fork *fk_r, t_fork *fk_l);
 
 /*------ TIME RELATED FUNCTIONS ------*/
-
-// todos los tiempos con los que vamos a trabajar son long y en ms.
 long	ft_now(void);
+
+/*------ EXTRACTS FROM LIBFT ------*/
+int		ft_isspace(int c);
+int		ft_isdigit(int c);
+int		ft_isint(char *s);
+int		ft_atoi(const char *str);
+int		ft_putchar_fd(int c, int fd);
+int		ft_putstr_fd(char *str, int fd);
+int		ft_strcmp(const char *s1, const char *s2);
+void	*ft_print_error(char *str);
+
+
+
+void	*print_die_th(void *arg);
+void	*print_eat_th(void *arg);
+void	*print_think_th(void *arg);
+void	*print_sleep_th(void *arg);
 
 #endif

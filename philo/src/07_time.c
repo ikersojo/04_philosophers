@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_digitcount.c                                    :+:      :+:    :+:   */
+/*   07_time.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 21:39:27 by isojo-go          #+#    #+#             */
-/*   Updated: 2022/10/11 21:44:53 by isojo-go         ###   ########.fr       */
+/*   Created: 2023/01/02 16:52:26 by isojo-go          #+#    #+#             */
+/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../inc/philo.h"
 
-/* DESCRIPTION:
-The function returns the number of digits in an unsigned long in a given
-base length.
----------------------------------------------------------------------------- */
-int	ft_digitcount(unsigned long n, int base)
+long	ft_now(void)
 {
-	int	i;
+	struct timeval	now;
+	long			ms;
 
-	if (n == 0)
-		return (1);
-	i = 0;
-	while (n > 0)
-	{
-		i++;
-		n = n / base;
-	}
-	return (i);
+	gettimeofday(&now, NULL);
+	ms = (now.tv_sec * 1000) + (now.tv_usec / 1000);
+	return (ms);
 }

@@ -6,13 +6,13 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:52:21 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/03 22:41:52 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	ft_prepare_the_table(t_data *data)
+int	ft_prepare_the_table(t_data *data)
 {
 	t_fork	*fork;
 	int		i;
@@ -25,11 +25,15 @@ void	ft_prepare_the_table(t_data *data)
 		fork->status = NOT_IN_USE;
 		fork->holder = 0;
 		if (pthread_mutex_init(&fork->mutex, NULL) != 0)
-			ft_exit_w_error(MUTEX_ERROR);
+		{
+			ft_print_error(MUTEX_ERROR);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	ft_sit_in_the_table(t_data *data)
+int	ft_sit_in_the_table(t_data *data)
 {
 	int		i;
 	t_philo	*philo;
@@ -44,11 +48,15 @@ void	ft_sit_in_the_table(t_data *data)
 		philo->status = THINKING;
 		philo->last_meal = ft_now();
 		if (pthread_create(&philo->th, NULL, launch_thread, (void *)data) != 0)
-			ft_exit_w_error(TH_NOT_CREATED);
+		{
+			ft_print_error(TH_NOT_CREATED);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	ft_leave_the_table(t_data *data)
+int	ft_leave_the_table(t_data *data)
 {
 	int			i;
 	t_philo		*philo;
@@ -58,6 +66,10 @@ void	ft_leave_the_table(t_data *data)
 	{
 		philo = data->philos + i;
 		if (pthread_join(philo->th, NULL) != 0)
-			ft_exit_w_error(TH_NOT_JOINED);
+		{
+			ft_print_error(TH_NOT_JOINED);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 #    By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/20 16:19:35 by isojo-go          #+#    #+#              #
-#    Updated: 2023/01/02 22:24:22 by isojo-go         ###   ########.fr        #
+#    Updated: 2023/01/04 11:13:27 by isojo-go         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,9 @@ OBJDIR	=	obj
 BINDIR	=	bin
 
 ## Libraries:
-LIBFT	=	./lib/LIBFT
-LIBS	=	$(LIBFT)/libft.a
 
 ## Header Files (dedicated and from libraries):
-HEADERS	=	-I ./inc -I $(LIBFT)/inc
+HEADERS	=	-I ./inc
 
 ## Source Files:
 SRC	=	$(wildcard $(SRCDIR)/*.c)
@@ -55,7 +53,7 @@ WHITE = \033[0;97m
 
 all:		$(NAME)
 
-$(NAME):	libft $(OBJ)
+$(NAME):	$(OBJ)
 			@mkdir -p $(BINDIR)
 			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME)
 			@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
@@ -64,9 +62,6 @@ debug:		libft $(OBJ)
 			@mkdir -p $(BINDIR)
 			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME) $(DEBUG)
 			@echo "$(GREEN)$(NAME) compiled for debug!$(DEF_COLOR)"
-
-libft:
-			@$(MAKE) -C $(LIBFT)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			@mkdir -p $(OBJDIR)
@@ -77,17 +72,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 clean:
 			@$(RM) $(OBJ) $(OBJDIR)
 			@echo "$(YELLOW)$(NAME) object files removed!$(DEF_COLOR)"
-			@$(MAKE) -C $(LIBFT) clean
 
-fclean:
-			@$(MAKE) -C $(LIBFT) fclean
-			@if [ -d $(OBJDIR) ]; then \
-				$(RM) $(OBJ) $(OBJDIR); \
-				echo "$(YELLOW)$(NAME) object files removed!$(DEF_COLOR)"; \
-			fi
+fclean:		clean
 			@$(RM) $(NAME) $(BINDIR)
 			@echo "$(RED)$(NAME) removed!$(DEF_COLOR)"
 
 re:			fclean all
 
-.PHONY:		all clean fclean re libft
+.PHONY:		all clean fclean re
