@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 23:45:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/05 01:12:20 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 		error_flag = 1;
 	if (ft_leave_the_table(data) == 1 && error_flag == 0)
 		error_flag = 1;
-	if (pthread_mutex_destroy(&data->screen) != 0  && error_flag == 0)
+	if (pthread_mutex_destroy(&data->screen) != 0 && error_flag == 0)
 		ft_print_error(MUTEX_ERROR);
 	ft_free_all(data);
 	if (error_flag == 1)

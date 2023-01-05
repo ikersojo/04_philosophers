@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:52:21 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/04 23:50:39 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	ft_sit_in_the_table(t_data *data)
 		philo->id = i + 1;
 		philo->it = 0;
 		philo->status = THINKING;
-		philo->last_meal = ft_now();
 		if (pthread_create(&philo->th, NULL, launch_thread, (void *)data) != 0)
 		{
 			ft_print_error(TH_NOT_CREATED);

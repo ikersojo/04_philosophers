@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:30:24 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/04 22:49:25 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/04 23:52:16 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ static t_fork	*ft_get_fork(t_data *data, int id)
 	return (NULL);
 }
 
+static int	ft_die_alone(t_data *data, t_philo *philo)
+{
+	if (data->n_off == 1)
+	{
+		usleep(data->t_die * 1000);
+		ft_die(data, philo);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	ft_eatattempt(t_data *data, t_philo *philo, t_fork *fk_r, t_fork *fk_l)
 {
 	if (fk_r->status == NOT_IN_USE)
@@ -60,19 +71,8 @@ void	ft_eatattempt(t_data *data, t_philo *philo, t_fork *fk_r, t_fork *fk_l)
 			ft_leave_fork(fk_r);
 		if (fk_l->holder == philo->id)
 			ft_leave_fork(fk_l);
-		usleep(100);
+		usleep(500);
 	}
-}
-
-static int	ft_die_alone(t_data *data, t_philo *philo)
-{
-	if (data->n_off == 1)
-	{
-		usleep(data->t_die * 1000);
-		ft_die(data, philo);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
 }
 
 void	*launch_thread(void *arg)
@@ -91,6 +91,7 @@ void	*launch_thread(void *arg)
 		fork_l = ft_get_fork(data, 1);
 	else
 		fork_l = ft_get_fork(data, philo->id + 1);
+	philo->last_meal = ft_now();
 	while (philo->status == THINKING && data->stop != 1
 		&& (philo->it < data->max_it || data->max_it == -1))
 	{
