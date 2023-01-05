@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:26:18 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 01:15:23 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/05 01:48:47 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void	ft_thinking(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->screen);
 	printf("%ldms %d is thinking\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
-	if ((ft_now() - philo->last_meal + t_think < data->t_die)
-		&& (data->n_off % 2 != 0))
+	if (ft_now() - philo->last_meal + t_think < data->t_die)
 		ft_enhanced_usleep(t_think);
 }
 
