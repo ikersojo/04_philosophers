@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 22:18:35 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 01:31:04 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/05 01:52:49 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_check_input(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	if (ft_atoi(*(argv + 1)) == 0 || ft_atoi(*(argv + 2)) == 0 || (argc == 6
-		&& ft_atoi(*(argv + 5)) == 0))
+			&& ft_atoi(*(argv + 5)) == 0))
 	{
 		ft_print_error(WRONG_SCOPE);
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:30:24 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 01:45:54 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/05 01:54:44 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static t_fork	*ft_get_fork(t_data *data, int id)
 
 static int	ft_die_alone(t_data *data, t_philo *philo)
 {
+	if (data->stop == 1)
+		return (EXIT_FAILURE);
 	if (data->n_off == 1)
 	{
 		ft_enhanced_usleep(data->t_die);
@@ -84,8 +86,6 @@ void	*launch_thread(void *arg)
 
 	data = (t_data *)arg;
 	usleep(250);
-	if (data->stop == 1)
-		return (EXIT_SUCCESS);
 	philo = ft_get_philo(data);
 	if (ft_die_alone(data, philo) == 1)
 		return (EXIT_SUCCESS);
