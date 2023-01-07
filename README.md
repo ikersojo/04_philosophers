@@ -109,7 +109,7 @@ A thread is a basic unit of CPU utilization. It is a set of instructions inside 
 A single process can have multiple threads, sharing the code, the heap and file descriptors, while keeping dedicated thread ID, stack, cpu registry and instruction pointer. This allows for a faster communication and execution times between them than in-between processes.
 The OS supports the multiple processes, and the multiple threads on each process, managinf the shared resources.
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx imagen
+<img  width="300" src="https://github.com/ikersojo/04_philosophers/blob/main/doc/imgs/threads_example.png\?raw\=true">
 
 In C **pthread.h** library needs to be included to manage threads. Also, in order to compile a program using this library, and additional option is required:
 
