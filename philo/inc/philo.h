@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 23:44:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 10:59:33 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/07 09:34:51 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_philo
 	int			status;
 	int			it;
 	long		last_meal;
+	long		full;
 	pthread_t	th;
 }				t_philo;
 
@@ -122,7 +123,7 @@ void	ft_die(t_data *data, t_philo *philo);
 
 /*------ TIME RELATED FUNCTIONS ------*/
 long	ft_now(void);
-void	ft_enhanced_usleep(long time);
+void	ft_enhanced_usleep(t_data *data, long time);
 
 /*------ EXTRACTS FROM LIBFT ------*/
 int		ft_isspace(int c);

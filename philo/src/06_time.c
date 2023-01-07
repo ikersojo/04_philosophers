@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:52:26 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 01:15:23 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/07 09:32:05 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ long	ft_now(void)
 	return (ms);
 }
 
-void	ft_enhanced_usleep(long time)
+void	ft_enhanced_usleep(t_data *data, long time)
 {
 	long	now;
 
 	now = ft_now();
-	while (ft_now() < (now + time))
+	while (ft_now() < (now + time) && (data->stop == 0))
 	{
 		usleep (500);
 	}

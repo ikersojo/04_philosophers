@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:26:18 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/06 17:02:29 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/07 09:34:27 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@ void	ft_eating(t_data *data, t_philo *philo)
 
 	philo->status = EATING;
 	philo->it++;
-	if (ft_now() - philo->last_meal + data->t_eat > data->t_die)
-	{
-		ft_enhanced_usleep(data->t_die - (ft_now() - philo->last_meal));
+	if (ft_now() - philo->last_meal > data->t_die)
 		ft_die(data, philo);
-	}
 	else
 	{
 		pthread_mutex_lock(&data->screen);
@@ -34,7 +31,8 @@ void	ft_eating(t_data *data, t_philo *philo)
 		}
 		pthread_mutex_unlock(&data->screen);
 		philo->last_meal = ft_now();
-		ft_enhanced_usleep(data->t_eat);
+		ft_enhanced_usleep(data, data->t_eat);
+		philo->full = ft_now();
 	}
 }
 
@@ -46,10 +44,10 @@ void	ft_sleeping(t_data *data, t_philo *philo)
 		printf("%ldms %d is sleeping\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
 	if (ft_now() - philo->last_meal + data->t_sleep < data->t_die)
-		ft_enhanced_usleep(data->t_sleep);
+		ft_enhanced_usleep(data, data->t_sleep);
 	else
 	{
-		ft_enhanced_usleep(data->t_die - (ft_now() - philo->last_meal));
+		ft_enhanced_usleep(data, data->t_die - (ft_now() - philo->last_meal));
 		ft_die(data, philo);
 	}
 }
@@ -58,17 +56,25 @@ void	ft_thinking(t_data *data, t_philo *philo)
 {
 	int	t_think;
 
-	if (ft_now() - philo->last_meal > data->t_eat + data->t_sleep + 5)
-		t_think = 0;
+	if (data->n_off % 2 != 0)
+	{
+		if (ft_now() - philo->full < data->t_eat * 2 + 1)
+			t_think = 1;
+		else
+			t_think = 0;
+		if (ft_now() - philo->full < data->t_eat + 1)
+			t_think += 1;
+	}
 	else
-		t_think = data->t_eat + 1;
+		t_think = 1;
 	philo->status = THINKING;
 	pthread_mutex_lock(&data->screen);
 	if (data->stop == 0)
 		printf("%ldms %d is thinking\n", ft_now() - data->start, philo->id);
 	pthread_mutex_unlock(&data->screen);
-	if (ft_now() - philo->last_meal + t_think < data->t_die)
-		ft_enhanced_usleep(t_think);
+	ft_enhanced_usleep(data, t_think);
+	if (ft_now() - philo->last_meal > data->t_die)
+		ft_die(data, philo);
 }
 
 void	ft_die(t_data *data, t_philo *philo)

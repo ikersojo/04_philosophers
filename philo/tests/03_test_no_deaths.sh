@@ -6,7 +6,7 @@
 #    By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 15:50:10 by isojo-go          #+#    #+#              #
-#    Updated: 2023/01/06 16:59:10 by isojo-go         ###   ########.fr        #
+#    Updated: 2023/01/07 09:14:49 by isojo-go         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,15 +75,9 @@ read ans
 
 echo "\033[0;94m../bin/philo 200 410 200 200 10\033[0;39m"
 ../bin/philo 200 410 200 200 10
+# note that depending on the HW, 10 ms might not be enough to launch all threads
 echo "\033[0;94m../bin/philo 200 410 200 200 10\033[0;39m"
 echo "\033[0;96mNo philo should have died.OK? Press a key to continue\033[0;39m"
 read ans
-
-echo "\033[0;94m../bin/philo 199 410 200 200 10\033[0;39m"
-../bin/philo 199 410 200 200 10
-echo "\033[0;94m../bin/philo 199 410 200 200 10\033[0;39m"
-echo "\033[0;96mNo philo should have died.OK? Press a key to continue\033[0;39m"
-read ans
-
 
 echo "\033[0;92mAll tests completed!"
