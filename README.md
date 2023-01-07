@@ -8,7 +8,7 @@ The mandatory part of the project will make the philosophers share the resources
 
 ---
 # Explanation of the Subject
-The subject can be found [here]() (in Spanish).
+The subject can be found [here](https://github.com/ikersojo/04_philosophers/blob/main/doc/es.subject.pdf) (in Spanish).
 
 ## Context
 One or more philosophers are sitting at a round table either eating, either thinking, either sleeping. While they are eating, they do not think or sleep; while thinking they don’t eat or sleep; and, of course, while sleeping, they do not eat or think.
@@ -47,7 +47,7 @@ timestamp_in_ms X is thinking
 timestamp_in_ms X died
 ```
 ## New alowed functions
-- printf is now allowed (included in stdio.h).
+- printf is now allowed, ue to the use of long printing with %ld (included in stdio.h).
 - usleep and gettimeofday to manage time (included in sys/time.h).
 - pthread_create, pthread_detach, pthread_join, pthread_mutex_init, pthread_mutex_destroy, pthread_mutex_lock and pthread_mutex_unlock to manage threads (included in pthread.h).
 
@@ -119,7 +119,7 @@ gcc -pthread main.c
 
 ### pthread_create
 ```c
-int		pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
+int	pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
 
 	<pthread_t *thread>  ID of the thread
 	<const pthread_attr_t *attr>  NULL (default attributes)
@@ -142,7 +142,7 @@ void	*function_name(void *arg)
 
 ### pthread_join
 ```c
-int		pthread_join(pthread_t thread, void **value_ptr);
+int	pthread_join(pthread_t thread, void **value_ptr);
 
 	<pthread_t thread>  ID of the thread
 	<void **value_ptr>  NULL (the function pthread_exit() is not allowed by the subject)
@@ -188,7 +188,7 @@ A mutex must be initialized and destroyed, and will be used to check the access 
 
 ### pthread_mutex_init and pthread_mutex_destroy
 ```c
-int		pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+int	pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
 
 	<pthread_mutex_t *mutex>  the pointer to a variable of pthread_mutex_t type.
 	<const pthread_mutexattr_t *attr> NULL (default attributes)
@@ -226,7 +226,7 @@ Otherwise an error number will be returned to indicate the error.
 ```
 
 ```c
-int		pthread_mutex_unlock(pthread_mutex_t *mutex);
+int	pthread_mutex_unlock(pthread_mutex_t *mutex);
 
 DESCRIPTION
 If the current thread holds the lock on mutex, then the pthread_mutex_unlock() function unlocks mutex.
@@ -247,7 +247,7 @@ Beware that mutexes can generate deadlocks, in which each thread waits for a res
 Management of the current time needs to be managed. In C, **sys/time.h** library needs to be included to manage time. In order to operate with waiting times, the **unistd.h** library is requried.
 
 ```c
-int		gettimeofday(struct timeval *restrict tp, void *restrict tzp);
+int	gettimeofday(struct timeval *restrict tp, void *restrict tzp);
 
 DESCRIPTION
 The system notion of the current Greenwich time and the current time zone is obtained with the gettimeofday() call. The time is expressed in seconds + microseconds since 00:00, January 1, 1970, defined as:
@@ -263,7 +263,7 @@ The timeval structure specifies a time value in seconds and microseconds.
 Note that the time needs to be managed in miliseconds, so a function to request the time in miliseconds since January 1 1970, is required to operate with time intervals.
 
 ```c
-int		usleep(useconds_t microseconds);
+int	usleep(useconds_t microseconds);
 
 DESCRIPTION
 The usleep() function suspends execution of the calling thread until either "microseconds" microseconds have elapsed.
