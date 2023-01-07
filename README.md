@@ -1,2 +1,283 @@
-# 04_Philosophers
-04_Philosophers
+# 04_philosophers
+---
+# Introduction
+In this project, you will learn the basics of threading a process. You will learn how to make threads. You will discover the mutex.
+The project is focused on introducing the concept of shared computer resources by multiple processes running at the same time (concurrent or parallel programming). The aim is to make the best possible use of the existing shared resources, to allow the processes to co-exist as long as possible.
+
+The mandatory part of the project will make the philosophers share the resources (forks), using threads and [mutex](https://en.wikipedia.org/wiki/Mutual_exclusion) (Mutual exclusion). The bonus part of the philosophers project replicates the same output but using processes (as in Pipex prject) and semaphores.
+
+---
+# Explanation of the Subject
+The subject can be found [here]() (in Spanish).
+
+## Context
+One or more philosophers are sitting at a round table either eating, either thinking, either sleeping. While they are eating, they do not think or sleep; while thinking they don’t eat or sleep; and, of course, while sleeping, they do not eat or think.
+- The philosophers sit at a circular table with a large bowl of spaghetti in the center.
+- There are some forks on the table. Serving and eating spaghetti with a single fork is very inconvenient, so **the philosophers will eat with two forks, one for each hand.**
+- Each time a philosopher finishes eating, they will drop their forks and start sleeping. Once they have finished sleeping, they will start thinking. The simulation stops when a philosopher dies.
+- Every philosopher needs to eat and they should never starve.
+- Philosophers don’t speak with each other.
+- Philosophers don’t know when another philosopher is about to die.
+- No need to say that philosophers should avoid dying!
+
+## Goal of the project
+The goal of the project is to write a program with a sequencing logic, so that the philosophers optimize their eating turns, to avoid the death of any of them. Note that the philosophers cannot communicate between them.
+
+## User input arguments
+```
+./philo arg1 arg2 arg3 arg4 (arg5)
+```
+
+- number_of_philosophers: is the number of philosophers and also the number of forks.
+- time_to_die: is in milliseconds, if a philosopher doesn’t start eating ’time_to_die’ milliseconds after **starting their last meal or the beginning of the simulation**, it dies.
+- time_to_eat: is in milliseconds and is the time it takes for a philosopher to eat. During that time they will need to keep the two forks.
+- time_to_sleep: is in milliseconds and is the time the philosopher will spend sleeping.
+- (optional) number_of_times_each_philosopher_must_eat: if all philosophers eat at least ’number_of_times_each_philosopher_must_eat’ the simulation will stop. If not specified, the simulation will stop only at the death of a philosopher.
+
+Note that the time to think is not specified, so it is assumed that they will tink only until they can eat.
+
+## Output log
+Each time a philosopher takes an action, our program must print a message formatted this way:
+
+```
+timestamp_in_ms X has taken a fork
+timestamp_in_ms X is eating
+timestamp_in_ms X is sleeping
+timestamp_in_ms X is thinking
+timestamp_in_ms X died
+```
+## New alowed functions
+- printf is now allowed (included in stdio.h).
+- usleep and gettimeofday to manage time (included in sys/time.h).
+- pthread_create, pthread_detach, pthread_join, pthread_mutex_init, pthread_mutex_destroy, pthread_mutex_lock and pthread_mutex_unlock to manage threads (included in pthread.h).
+
+See last sections of this page for details in new 2 key concpets for this project.
+
+---
+# Program layout and steps
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+
+x
+
+
+x
+
+
+x
+
+
+x
+
+
+x
+
+
+
+
+
+
+
+
+
+
+
+---
+# New concept: Concurrent programming and threads
+
+## Concurrent / Parallel Programming
+
+Concurrent programming allows the same program to carry out instructions simultaneously, without working in sequence (as we have seen so far). Of course, several set of insturctions will be conducted in sequence, but multiple sets of such different instructions could be performed at the same time. The key advantage is that the programs can execute instructions much faster, and th emain drawback is the management required to avoid issues related to the nature of the concurrency itself, where the same resources (e.g. defined variables) might be required at the same time. This is the key aspect to be managed by the project using mutex.
+
+## Threads
+A thread is a basic unit of CPU utilization. It is a set of instructions inside a process. A traditional sequential process is equal to a task with one thread (single-threaded).
+A single process can have multiple threads, sharing the code, the heap and file descriptors, while keeping dedicated thread ID, stack, cpu registry and instruction pointer. This allows for a faster communication and execution times between them than in-between processes.
+The OS supports the multiple processes, and the multiple threads on each process, managinf the shared resources.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx imagen
+
+In C **pthread.h** library needs to be included to manage threads. Also, in order to compile a program using this library, and additional option is required:
+
+```
+gcc -pthread main.c
+```
+
+### pthread_create
+```c
+int		pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
+
+	<pthread_t *thread>  ID of the thread
+	<const pthread_attr_t *attr>  NULL (default attributes)
+	<void *(*start_routine)(void *)>  the function where the thread will start its execution.
+	<void *arg>  only argument to pass to start_routine function
+
+DESCRIPTION
+The pthread_create() function is used to create a new thread, with attributes specified by attr, within a process.
+If attr is NULL, the default attributes are used.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+NOTE: the thread id is contained within the pthread_t data type (struct), not in the return.
+```
+The start_routine function is prototyped as:
+```c
+void	*function_name(void *arg)
+```
+
+### pthread_join
+```c
+int		pthread_join(pthread_t thread, void **value_ptr);
+
+	<pthread_t thread>  ID of the thread
+	<void **value_ptr>  NULL (the function pthread_exit() is not allowed by the subject)
+
+DESCRIPTION
+The pthread_join() function suspends execution of the calling thread until the target thread terminates unless the target thread has already terminated.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+### pthread_detach
+
+Rather than waiting for the thread to finish and joining the main thread, this function tell the OS to reclaim all resources by this thread just after it finishes execution.
+
+```c
+int		pthread_detach(pthread_t thread);
+
+DESCRIPTION
+The pthread_detach() function is used to indicate to the implementation that storage for the thread
+thread can be reclaimed when the thread terminates.  If thread has not terminated, pthread_detach()
+will not cause it to terminate.  The effect of multiple pthread_detach() calls on the same target
+thread is unspecified.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+## Data Race (main issue to manage in concurrent programming)
+
+A [race condition](https://en.wikipedia.org/wiki/Race_condition) can arise in software when a computer program has multiple code paths that are executing at the same time. If the multiple code paths take a different amount of time than expected, they can finish in a different order than expected, which can cause software bugs due to unanticipated behavior.
+
+The data race it refers to a situation where a memory operation in one thread could potentially attempt to access a memory location at the same time that a memory operation in another thread is writing to that memory location: if two threads write to a memory location at the same time, it may be possible for the memory location to end up holding a value that is meaningless, and this providing wrong results.
+
+## Mutex
+A mutex (short for “mutual exclusion”) is essentially a lock that allows to manage access to data and prevent shared resources being used at the same time.
+
+Mutexes are the means to avoid data races, by setting locks on resources, only allowing threads to access them when they are not lock by another thread. Note that they waste CPU time because a mutex lock sits testing the mutex.
+
+A mutex must be initialized and destroyed, and will be used to check the access condition of the memory.
+
+### pthread_mutex_init and pthread_mutex_destroy
+```c
+int		pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+
+	<pthread_mutex_t *mutex>  the pointer to a variable of pthread_mutex_t type.
+	<const pthread_mutexattr_t *attr> NULL (default attributes)
+
+DESCRIPTION
+The function creates a new mutex, with attributes specified with attr.
+If attr is NULL the default attributes are used.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+```c
+int		pthread_mutex_destroy(pthread_mutex_t *mutex);
+
+DESCRIPTION
+The function frees the resources allocated for mutex.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+### pthread_mutex_lock and pthread_mutex_unlock
+```c
+int		pthread_mutex_lock(pthread_mutex_t *mutex);
+
+DESCRIPTION
+The function locks mutex. If the mutex is already locked, the calling thread will block until the mutex becomes available.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+```c
+int		pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+DESCRIPTION
+If the current thread holds the lock on mutex, then the pthread_mutex_unlock() function unlocks mutex.
+Calling pthread_mutex_unlock() with a mutex that the calling thread does not hold will result in undefined behavior.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+## Deadlocks
+
+Beware that mutexes can generate deadlocks, in which each thread waits for a resource held by another thread concurrenlty. One of the main challenges of the project is to avoid deadlocks waiting for several resource that might be own by other threads.
+
+---
+# New concept: Manage System Time
+
+Management of the current time needs to be managed. In C, **sys/time.h** library needs to be included to manage time. In order to operate with waiting times, the **unistd.h** library is requried.
+
+```c
+int		gettimeofday(struct timeval *restrict tp, void *restrict tzp);
+
+DESCRIPTION
+The system notion of the current Greenwich time and the current time zone is obtained with the gettimeofday() call. The time is expressed in seconds + microseconds since 00:00, January 1, 1970, defined as:
+
+struct timeval {
+		time_t       tv_sec;   /* seconds since Jan. 1, 1970 */
+		suseconds_t  tv_usec;  /* and microseconds */
+};
+
+For timezone (*tzp), it is not in use anymore, so just use NULL.
+The timeval structure specifies a time value in seconds and microseconds.
+```
+Note that the time needs to be managed in miliseconds, so a function to request the time in miliseconds since January 1 1970, is required to operate with time intervals.
+
+```c
+int		usleep(useconds_t microseconds);
+
+DESCRIPTION
+The usleep() function suspends execution of the calling thread until either "microseconds" microseconds have elapsed.
+
+RETURN VALUES
+If successful, the function will return zero.
+Otherwise an error number will be returned to indicate the error.
+```
+
+---
+# Resources / further info
+
+https://youtube.com/playlist?list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2
+
+https://www.codequoi.com/en/threads-mutexes-and-concurrent-programming-in-c/
+
+https://www.cs.miami.edu/home/visser/Courses/CSC322-09S/Content/UNIXProgramming/UNIXThreads.shtml
