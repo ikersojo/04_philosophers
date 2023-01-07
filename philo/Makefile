@@ -6,7 +6,7 @@
 #    By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/20 16:19:35 by isojo-go          #+#    #+#              #
-#    Updated: 2023/01/04 11:13:27 by isojo-go         ###   ########.fr        #
+#    Updated: 2023/01/07 10:05:49 by isojo-go         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ SRC	=	$(wildcard $(SRCDIR)/*.c)
 OBJ	=	$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 ## Compilation flags:
-CC			=	gcc
+CC			=	gcc -pthread
 CFLAGS		=	-Wall -Wextra -Werror
 RM			=	rm -rf
 DEBUG		=	-g3 -fsanitize=address -static-libsan
@@ -55,12 +55,12 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@mkdir -p $(BINDIR)
-			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME)
+			@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME)
 			@echo "$(GREEN)$(NAME) compiled!$(DEF_COLOR)"
 
 debug:		libft $(OBJ)
 			@mkdir -p $(BINDIR)
-			@$(CC) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME) $(DEBUG)
+			@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(HEADERS) -o ./$(BINDIR)/$(NAME) $(DEBUG)
 			@echo "$(GREEN)$(NAME) compiled for debug!$(DEF_COLOR)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
