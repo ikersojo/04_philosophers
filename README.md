@@ -1,5 +1,5 @@
 # 04_philosophers
----
+
 # Introduction
 In this project, you will learn the basics of threading a process. You will learn how to make threads. You will discover the mutex.
 The project is focused on introducing the concept of shared computer resources by multiple processes running at the same time (concurrent or parallel programming). The aim is to make the best possible use of the existing shared resources, to allow the processes to co-exist as long as possible.
@@ -56,46 +56,48 @@ See last sections of this page for details in new 2 key concpets for this projec
 ---
 # Program layout and steps
 
-x
+## 00_main
 
 x
 
-x
+## 01_input_check
 
 x
 
-x
+## 02_init_data
 
 x
 
-x
+## 03_setup_threads
 
 x
 
+## 04_launch_threads
 
 x
 
+## 05_actions
+
+## AUX
+### 06_time
 
 x
 
+### 99_libft_extract
 
-x
+This project does not allow Libft, so the required functions have been extracted.
+Since exit() is not allowed, the function ft_exit_w_error() has been replaced by ft_print_error().
 
+---
+# Bonus
 
-x
-
-
-x
-
-
-
+The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child porcesses do not need to be joined). For mutex, semaphores are used instead
 
 
 
-
-
-
-
+---
+# Score
+TBD...
 
 ---
 # New concept: Concurrent programming and threads
@@ -109,7 +111,7 @@ A thread is a basic unit of CPU utilization. It is a set of instructions inside 
 A single process can have multiple threads, sharing the code, the heap and file descriptors, while keeping dedicated thread ID, stack, cpu registry and instruction pointer. This allows for a faster communication and execution times between them than in-between processes.
 The OS supports the multiple processes, and the multiple threads on each process, managinf the shared resources.
 
-<img  width="600" src="https://github.com/ikersojo/04_philosophers/blob/main/doc/imgs/threads_example.png\?raw\=true">
+<img width="600" style="horizontal-align:middle" src="https://github.com/ikersojo/04_philosophers/blob/main/doc/imgs/threads_example.png\?raw\=true">
 
 In C **pthread.h** library needs to be included to manage threads. Also, in order to compile a program using this library, and additional option is required:
 
@@ -160,7 +162,7 @@ Otherwise an error number will be returned to indicate the error.
 Rather than waiting for the thread to finish and joining the main thread, this function tell the OS to reclaim all resources by this thread just after it finishes execution.
 
 ```c
-int		pthread_detach(pthread_t thread);
+int	pthread_detach(pthread_t thread);
 
 DESCRIPTION
 The pthread_detach() function is used to indicate to the implementation that storage for the thread
@@ -187,6 +189,7 @@ Mutexes are the means to avoid data races, by setting locks on resources, only a
 A mutex must be initialized and destroyed, and will be used to check the access condition of the memory.
 
 ### pthread_mutex_init and pthread_mutex_destroy
+
 ```c
 int	pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
 
@@ -213,7 +216,8 @@ If successful, the function will return zero.
 Otherwise an error number will be returned to indicate the error.
 ```
 
-### pthread_mutex_lock and pthread_mutex_unlock
+### pthread_mutex_lock and pthread_mutex_unlock
+
 ```c
 int		pthread_mutex_lock(pthread_mutex_t *mutex);
 
@@ -240,6 +244,17 @@ Otherwise an error number will be returned to indicate the error.
 ## Deadlocks
 
 Beware that mutexes can generate deadlocks, in which each thread waits for a resource held by another thread concurrenlty. One of the main challenges of the project is to avoid deadlocks waiting for several resource that might be own by other threads.
+
+---
+# New concept: Sempahores
+
+x
+
+x
+
+x
+
+x
 
 ---
 # New concept: Manage System Time
