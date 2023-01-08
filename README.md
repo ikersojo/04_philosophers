@@ -111,7 +111,7 @@ A thread is a basic unit of CPU utilization. It is a set of instructions inside 
 A single process can have multiple threads, sharing the code, the heap and file descriptors, while keeping dedicated thread ID, stack, cpu registry and instruction pointer. This allows for a faster communication and execution times between them than in-between processes.
 The OS supports the multiple processes, and the multiple threads on each process, managinf the shared resources.
 
-<img width="600" style="horizontal-align:middle" src="https://github.com/ikersojo/04_philosophers/blob/main/doc/imgs/threads_example.png\?raw\=true">
+<img width="700" src="https://github.com/ikersojo/04_philosophers/blob/main/doc/imgs/threads_example.png\?raw\=true">
 
 In C **pthread.h** library needs to be included to manage threads. Also, in order to compile a program using this library, and additional option is required:
 
@@ -129,8 +129,8 @@ int	pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_
 	<void *arg>  only argument to pass to start_routine function
 
 DESCRIPTION
-The pthread_create() function is used to create a new thread, with attributes specified by attr, within a process.
-If attr is NULL, the default attributes are used.
+The pthread_create() function is used to create a new thread, with attributes specified by attr,
+within a process. If attr is NULL, the default attributes are used.
 
 RETURN VALUES
 If successful, the function will return zero.
@@ -150,7 +150,8 @@ int	pthread_join(pthread_t thread, void **value_ptr);
 	<void **value_ptr>  NULL (the function pthread_exit() is not allowed by the subject)
 
 DESCRIPTION
-The pthread_join() function suspends execution of the calling thread until the target thread terminates unless the target thread has already terminated.
+The pthread_join() function suspends execution of the calling thread until the target thread
+terminates unless the target thread has already terminated.
 
 RETURN VALUES
 If successful, the function will return zero.
@@ -159,7 +160,8 @@ Otherwise an error number will be returned to indicate the error.
 
 ### pthread_detach
 
-Rather than waiting for the thread to finish and joining the main thread, this function tell the OS to reclaim all resources by this thread just after it finishes execution.
+Rather than waiting for the thread to finish and joining the main thread, this function tell
+the OS to reclaim all resources by this thread just after it finishes execution.
 
 ```c
 int	pthread_detach(pthread_t thread);
@@ -222,7 +224,8 @@ Otherwise an error number will be returned to indicate the error.
 int		pthread_mutex_lock(pthread_mutex_t *mutex);
 
 DESCRIPTION
-The function locks mutex. If the mutex is already locked, the calling thread will block until the mutex becomes available.
+The function locks mutex. If the mutex is already locked, the calling thread will block
+until the mutex becomes available.
 
 RETURN VALUES
 If successful, the function will return zero.
@@ -233,8 +236,9 @@ Otherwise an error number will be returned to indicate the error.
 int	pthread_mutex_unlock(pthread_mutex_t *mutex);
 
 DESCRIPTION
-If the current thread holds the lock on mutex, then the pthread_mutex_unlock() function unlocks mutex.
-Calling pthread_mutex_unlock() with a mutex that the calling thread does not hold will result in undefined behavior.
+If the current thread holds the lock on mutex, then the pthread_mutex_unlock() function
+unlocks mutex. Calling pthread_mutex_unlock() with a mutex that the calling thread does
+not hold will result in undefined behavior.
 
 RETURN VALUES
 If successful, the function will return zero.
@@ -265,11 +269,13 @@ Management of the current time needs to be managed. In C, **sys/time.h** library
 int	gettimeofday(struct timeval *restrict tp, void *restrict tzp);
 
 DESCRIPTION
-The system notion of the current Greenwich time and the current time zone is obtained with the gettimeofday() call. The time is expressed in seconds + microseconds since 00:00, January 1, 1970, defined as:
+The system notion of the current Greenwich time and the current time zone is obtained with
+the gettimeofday() call. The time is expressed in seconds + microseconds 
+since 00:00, January 1, 1970, defined as:
 
-struct timeval {
-		time_t       tv_sec;   /* seconds since Jan. 1, 1970 */
-		suseconds_t  tv_usec;  /* and microseconds */
+struct	timeval {
+	time_t   	tv_sec;   /* seconds since Jan. 1, 1970 */
+	suseconds_t	tv_usec;  /* and microseconds */
 };
 
 For timezone (*tzp), it is not in use anymore, so just use NULL.
@@ -281,7 +287,8 @@ Note that the time needs to be managed in miliseconds, so a function to request 
 int	usleep(useconds_t microseconds);
 
 DESCRIPTION
-The usleep() function suspends execution of the calling thread until either "microseconds" microseconds have elapsed.
+The usleep() function suspends execution of the calling thread until either
+"microseconds" microseconds have elapsed.
 
 RETURN VALUES
 If successful, the function will return zero.
