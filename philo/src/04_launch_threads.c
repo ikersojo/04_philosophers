@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:30:24 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:33:34 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:09:33 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	*launch_thread(void *arg)
 		fork_l = ft_get_fork(data, 1);
 	else
 		fork_l = ft_get_fork(data, philo->id + 1);
-	philo->last_meal = ft_now();
-	philo->full = ft_now();
+	philo->last_meal = data->start;
+	philo->full = data->start;
 	while (philo->status == THINKING && data->stop != 1
 		&& (philo->it < data->max_it || data->max_it == -1))
 		ft_eatattempt(data, philo, fork_r, fork_l);
