@@ -6,11 +6,11 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:52:26 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:53:03 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:02:24 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 long	ft_now(void)
 {

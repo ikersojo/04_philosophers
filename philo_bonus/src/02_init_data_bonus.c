@@ -6,11 +6,11 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 23:35:11 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:53:03 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:59:03 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 static void	ft_read_args(t_data *data, int argc, char **argv)
 {
@@ -27,23 +27,11 @@ static void	ft_read_args(t_data *data, int argc, char **argv)
 
 static int	ft_alloc_philos(t_data *data)
 {
-	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->n_off);
-	if (data->philos == NULL)
+	data->philo = (t_philo *)malloc(sizeof(t_philo) * 1);
+	if (data->philo == NULL)
 	{
-		ft_print_error(MEMALLOC_ERROR);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-static int	ft_alloc_forks(t_data *data)
-{
-	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->n_off);
-	if (data->forks == NULL)
-	{
-		ft_print_error(MEMALLOC_ERROR);
-		free (data->philos);
-		return (EXIT_FAILURE);
+		free (data);
+		ft_error_exit(MEMALLOC_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -54,30 +42,15 @@ t_data	*ft_init(int argc, char **argv)
 
 	data = (t_data *)malloc(sizeof(t_data));
 	if (data == NULL)
-		return (ft_print_error(MEMALLOC_ERROR));
+		ft_error_exit(MEMALLOC_ERROR);
 	ft_read_args(data, argc, argv);
-	if (ft_alloc_philos(data) == 1)
-	{
-		free (data);
-		return (NULL);
-	}
-	if (ft_alloc_forks(data) == 1)
-	{
-		free (data);
-		return (NULL);
-	}
-	if (pthread_mutex_init(&data->screen, NULL) != 0)
-	{
-		ft_print_error(MUTEX_ERROR);
-		ft_free_all(data);
-		return (NULL);
-	}
+	ft_alloc_philos(data);
+	data->screen = sem_open("screen", O_CREAT, 0666, 1);
 	return (data);
 }
 
 void	ft_free_all(t_data *data)
 {
-	free (data->philos);
-	free (data->forks);
+	free (data->philo);
 	free (data);
 }

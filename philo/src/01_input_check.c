@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 22:18:35 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/05 01:52:49 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:13:02 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static int	ft_int(int argc, char **argv)
 
 int	ft_check_input(int argc, char **argv)
 {
-	(void)argv;
 	if ((argc != 5 && argc != 6) || ft_empty(argc, argv) || ft_int(argc, argv))
 	{
 		ft_print_error(WRONG_SYNTAX);

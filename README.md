@@ -91,9 +91,7 @@ Since exit() is not allowed, the function ft_exit_w_error() has been replaced by
 ---
 # Bonus
 
-The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child porcesses do not need to be joined). For mutex, semaphores are used instead
-
-
+The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child porcesses do not need to be joined). For mutex, semaphores are used instead.
 
 ---
 # Score

@@ -6,11 +6,11 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:24:47 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:53:03 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:02:24 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 /* DESCRIPTION:
 Outputs the char c to the file descriptor fd.
@@ -63,10 +63,10 @@ Exits the program, outputting a string with the details on the error to STDOUT.
 If str is "errno" the default description of error is displayed. Else, the
 custom str will be used as description of the error.
 ---------------------------------------------------------------------------- */
-void	*ft_print_error(char *str)
+void	ft_error_exit(char *str)
 {
 	ft_putstr_fd("\033[31mError: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\033[0;39m", 2);
-	return (NULL);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 23:44:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:53:03 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:47:45 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <semaphore.h>
+# include <sys/wait.h>
 
 // Error Messages
 # define WRONG_SYNTAX	"Wrong Syntax. \
@@ -39,11 +41,10 @@ Please check input considering the following:\n\n\
 simulation will instantly stop.\n\n"
 
 # define MEMALLOC_ERROR		"Memory could not be allocated.\n"
-# define TH_NOT_CREATED		"Thread could not be created.\n"
-# define TH_NOT_JOINED		"Thread could not be joined.\n"
-# define TH_ID_NOT_FOUND	"Thread id not found\n"
-# define FORK_ID_NOT_FOUND	"Fork id not found\n"
-# define MUTEX_ERROR		"Mutex could not be created/destroyed.\n"
+# define P_NOT_CREATED		"Process could not be created.\n"
+# define P_ID_NOT_FOUND		"Process id not found\n"
+// # define FORK_ID_NOT_FOUND	"Fork id not found\n"
+# define SEM_ERROR			"Semaphore could not be created/destroyed.\n"
 
 // Potential Philosophers Conditions
 # define EATING			0
@@ -66,16 +67,15 @@ typedef struct s_philo
 	int			it;
 	long		last_meal;
 	long		full;
-	pthread_t	th;
 }				t_philo;
 
-typedef struct s_fork
-{
-	int				id;
-	int				status;
-	int				holder;
-	pthread_mutex_t	mutex;
-}					t_fork;
+// typedef struct s_fork // no need
+// {
+// 	int				id;
+// 	int				status;
+// 	int				holder;
+// 	pthread_mutex_t	mutex;
+// }					t_fork;
 
 typedef struct s_data
 {
@@ -86,17 +86,18 @@ typedef struct s_data
 	int				max_it;
 	long			start;
 	int				stop;
-	pthread_mutex_t	screen;
-	t_philo			*philos;
-	t_fork			*forks;
+	sem_t			*screen; //replace with semaphore
+	t_philo			*philo;
+	sem_t			*forks;
+	pid_t			pid; //modified from pthread_t to pid_t
 }					t_data;
 
-typedef struct s_info
-{
-	t_data	*data;
-	long	time;
-	int		id;
-}			t_info;
+// typedef struct s_info
+// {
+// 	t_data	*data;
+// 	long	time;
+// 	int		id;
+// }			t_info;
 
 // FUNCTIONS
 /*------ INITIALIZE AND DESTROY DATA STRUCTURE ------*/
@@ -112,14 +113,12 @@ int		ft_sit_in_the_table(t_data *data);
 int		ft_leave_the_table(t_data *data);
 
 /*------ PHILOSOPHERS ACTIONS ------*/
-void	*launch_thread(void *arg);
-void	ft_take_fork(t_philo *philo, t_fork *fork);
-void	ft_leave_fork(t_fork *fork);
-void	ft_start_eat(t_data *data, t_philo *philo, t_fork *fk_r, t_fork *fk_l);
-void	ft_eating(t_data *data, t_philo *philo);
-void	ft_sleeping(t_data *data, t_philo *philo);
-void	ft_thinking(t_data *data, t_philo *philo);
-void	ft_die(t_data *data, t_philo *philo);
+void	launch_thread(t_data *data);
+void	ft_start_eat(t_data *data);
+void	ft_eating(t_data *data);
+void	ft_sleeping(t_data *data);
+void	ft_thinking(t_data *data);
+void	ft_die(t_data *data);
 
 /*------ TIME RELATED FUNCTIONS ------*/
 long	ft_now(void);
@@ -133,6 +132,6 @@ int		ft_atoi(const char *str);
 int		ft_putchar_fd(int c, int fd);
 int		ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *s1, const char *s2);
-void	*ft_print_error(char *str);
+void	ft_error_exit(char *str);
 
 #endif

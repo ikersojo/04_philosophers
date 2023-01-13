@@ -6,11 +6,11 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:18:43 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:53:03 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:02:24 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../inc/philo_bonus.h"
 
 /* DESCRIPTION:
 The isspace() function tests for the white-space characters. For any locale,
