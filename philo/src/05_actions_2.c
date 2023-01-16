@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 18:26:18 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/07 09:34:27 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:57:35 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_eating(t_data *data, t_philo *philo)
 		if (data->stop == 0)
 		{
 			time = ft_now() - data->start;
+			printf("%ldms %d has taken a fork\n", time, philo->id);
 			printf("%ldms %d has taken a fork\n", time, philo->id);
 			printf("%ldms %d is eating\n", ft_now() - data->start, philo->id);
 		}

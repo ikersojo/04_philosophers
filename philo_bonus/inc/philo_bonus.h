@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 23:44:54 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/01/10 17:47:45 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:23:29 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <semaphore.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 // Error Messages
 # define WRONG_SYNTAX	"Wrong Syntax. \
@@ -43,7 +44,6 @@ simulation will instantly stop.\n\n"
 # define MEMALLOC_ERROR		"Memory could not be allocated.\n"
 # define P_NOT_CREATED		"Process could not be created.\n"
 # define P_ID_NOT_FOUND		"Process id not found\n"
-// # define FORK_ID_NOT_FOUND	"Fork id not found\n"
 # define SEM_ERROR			"Semaphore could not be created/destroyed.\n"
 
 // Potential Philosophers Conditions
@@ -51,13 +51,6 @@ simulation will instantly stop.\n\n"
 # define SLEEPING		1
 # define THINKING		2
 # define DEAD			3
-
-# define MET			1
-# define NOT_MET		0
-
-// Potential Fork Conditions
-# define NOT_IN_USE		0
-# define IN_USE			1
 
 // STRUCTS
 typedef struct s_philo
@@ -69,14 +62,6 @@ typedef struct s_philo
 	long		full;
 }				t_philo;
 
-// typedef struct s_fork // no need
-// {
-// 	int				id;
-// 	int				status;
-// 	int				holder;
-// 	pthread_mutex_t	mutex;
-// }					t_fork;
-
 typedef struct s_data
 {
 	int				n_off;
@@ -85,19 +70,12 @@ typedef struct s_data
 	int				t_sleep;
 	int				max_it;
 	long			start;
-	int				stop;
-	sem_t			*screen; //replace with semaphore
+	int				ready;
 	t_philo			*philo;
+	pid_t			*pid;
+	sem_t			*screen;
 	sem_t			*forks;
-	pid_t			pid; //modified from pthread_t to pid_t
 }					t_data;
-
-// typedef struct s_info
-// {
-// 	t_data	*data;
-// 	long	time;
-// 	int		id;
-// }			t_info;
 
 // FUNCTIONS
 /*------ INITIALIZE AND DESTROY DATA STRUCTURE ------*/
@@ -108,9 +86,8 @@ void	ft_free_all(t_data *data);
 int		ft_check_input(int argc, char **argv);
 
 /*------ SETUP/DESTROY THE THREADS AND MUTEXES ------*/
-int		ft_prepare_the_table(t_data *data);
-int		ft_sit_in_the_table(t_data *data);
-int		ft_leave_the_table(t_data *data);
+void	ft_prepare_the_table(t_data *data);
+void	ft_sit_in_the_table(t_data *data);
 
 /*------ PHILOSOPHERS ACTIONS ------*/
 void	launch_thread(t_data *data);
@@ -122,7 +99,7 @@ void	ft_die(t_data *data);
 
 /*------ TIME RELATED FUNCTIONS ------*/
 long	ft_now(void);
-void	ft_enhanced_usleep(t_data *data, long time);
+void	ft_enhanced_usleep(long time);
 
 /*------ EXTRACTS FROM LIBFT ------*/
 int		ft_isspace(int c);

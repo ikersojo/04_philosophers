@@ -58,40 +58,44 @@ See last sections of this page for details in new 2 key concpets for this projec
 
 ## 00_main
 
-x
+Launch all main functions listed below and wiat for the threads/processes to end.
 
 ## 01_input_check
 
-x
+Check that the input introduced by the user is correct.
 
 ## 02_init_data
 
-x
+Allocate memory and initialize data struct (and its components).
+Note that all the variables of the program are contained in the data struct (see the *.h files to see the content).
 
 ## 03_setup_threads
 
-x
+Prepare all the conditions before launching the simulations
 
 ## 04_launch_threads
 
-x
+Start the simulation.
 
 ## 05_actions
+
+The main actions a philosopher has to carry out: attempt to pick the forks, eat, sleep and think.
+Also, die.
 
 ## AUX
 ### 06_time
 
-x
+
 
 ### 99_libft_extract
 
 This project does not allow Libft, so the required functions have been extracted.
-Since exit() is not allowed, the function ft_exit_w_error() has been replaced by ft_print_error().
+Since exit() is not allowed in mandatory part, the function ft_exit_w_error() has been replaced by ft_print_error().
 
 ---
 # Bonus
 
-The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child porcesses do not need to be joined). For mutex, semaphores are used instead.
+The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child processes do not need to be joined, since exit function can be used). Instead of mutexes, semaphores are used. Note that to check if a philosopher has died while waiting for a fork, since the sem_wait will stop the simulation form stoping, this function is launched in a different thread, while the main thread on each process is checkng ot has died while the sempahore is blocking the auxiliary thread.
 
 ---
 # Score
