@@ -254,13 +254,74 @@ Beware that mutexes can generate deadlocks, in which each thread waits for a res
 ---
 # New concept: Sempahores
 
-x
+Semaphores are opened as a file descriptor, and can be acceses form all processes / threads. The main advantage is that it can have a counter to dinamically wait/post their value, simplifing problem where the total amount of resources are shared by a porportional amount, to a defined number of porcesses/threads. The main disadvantage on this porject, is that sem_trywait cannot be used, the process will be always blocked.
 
-x
+```c
+#include <semaphore.h>
+sem_t	*sem_open(const char *name, int oflag, ...);
+int	sem_close(sem_t *sem);
+int	sem_unlink(const char *name);
 
-x
+DESCRIPTION
+The named semaphore named name is initialized and opened as specified by the argument oflag and a
+semaphore descriptor is returned to the calling process.
 
-x
+The value of oflag is formed by oring the following values:
+
+	O_CREAT         create the semaphore if it does not exist
+	O_EXCL          error if create and semaphore exists
+
+If O_CREAT is specified, sem_open() requires an additional two arguments.  mode specifies the
+permissions for the semaphore as described in chmod(2) and modified by the process umask value (see
+umask(2)).  The semaphore is created with an initial value, which must be less than or equal to
+SEM_VALUE_MAX.
+
+If O_EXCL is specified and the semaphore exists, sem_open() fails.  The check for the existence of the
+semaphore and the creation of the semaphore are atomic with respect to all processes calling sem_open()
+with O_CREAT and O_EXCL set.
+
+When a new semaphore is created, it is given the user ID and group ID which correspond to the effective
+user and group IDs of the calling process. There is no visible entry in the file system for the created
+object in this implementation.
+
+The returned semaphore descriptor is available to the calling process until it is closed with
+sem_close(), or until the caller exits or execs.
+
+If a process makes repeated calls to sem_open(), with the same name argument, the same descriptor is
+returned for each successful call, unless sem_unlink() has been called on the semaphore in the interim.
+With sem_unlink() the named semaphore named name is removed.  If the semaphore is in use by other processes,
+then name is immediately disassociated with the semaphore, but the semaphore itself will not be removed until
+all references to it have been closed.  Subsequent calls to sem_open() using name will refer to or create a
+new semaphore named name.
+
+If sem_open() fails for any reason, it will return a value of SEM_FAILED and sets errno.  On success,
+it returns a semaphore descriptor.
+```
+
+```c
+#include <semaphore.h>
+int	sem_wait(sem_t *sem);
+
+DESCRIPTION:
+The semaphore referenced by sem is locked.  When calling sem_wait(), if the semaphore value is zero,
+the calling thread will block until the lock is acquired or until the call is interrupted by a signal.
+Alternatively, the sem_trywait() function will fail if the semaphore is already locked, rather than
+blocking on the semaphore.
+
+If successful (the lock was acquired), sem_wait() and sem_trywait() will return 0.  Otherwise, -1 is
+returned and errno is set, and the state of the semaphore is unchanged.
+```
+
+```c
+#include <semaphore.h>
+int	sem_post(sem_t *sem);
+
+DESCRIPTION
+The semaphore referenced by sem is unlocked, the value of the semaphore is incremented, and all threads
+which are waiting on the semaphore are awakened.
+sem_post() is reentrant with respect to signals and may be called from within a signal hanlder.
+If successful, sem_post() will return 0.  Otherwise, -1 is returned and errno is set.
+```
 
 ---
 # New concept: Manage System Time
