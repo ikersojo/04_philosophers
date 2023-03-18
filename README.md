@@ -1,5 +1,10 @@
 # 04_philosophers
 
+---
+# Score
+<img width="400" src="./doc/imgs/score.png\?raw\=true">
+---
+
 # Introduction
 In this project, you will learn the basics of threading a process. You will learn how to make threads. You will discover the mutex.
 The project is focused on introducing the concept of shared computer resources by multiple processes running at the same time (concurrent or parallel programming). The aim is to make the best possible use of the existing shared resources, to allow the processes to co-exist as long as possible.
@@ -96,10 +101,6 @@ Since exit() is not allowed in mandatory part, the function ft_exit_w_error() ha
 # Bonus
 
 The bonus achieves the same result, but instead of using threads, child porcesses are launched (note that child processes do not need to be joined, since exit function can be used). Instead of mutexes, semaphores are used. Note that to check if a philosopher has died while waiting for a fork, since the sem_wait will stop the simulation form stoping, this function is launched in a different thread, while the main thread on each process is checkng ot has died while the sempahore is blocking the auxiliary thread.
-
----
-# Score
-<img width="700" src="./doc/imgs/score.png\?raw\=true">
 
 ---
 # New concept: Concurrent programming and threads
