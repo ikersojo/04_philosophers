@@ -99,7 +99,7 @@ The bonus achieves the same result, but instead of using threads, child porcesse
 
 ---
 # Score
-TBD...
+<img width="700" src="./doc/imgs/score.png\?raw\=true">
 
 ---
 # New concept: Concurrent programming and threads
